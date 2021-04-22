@@ -1,0 +1,151 @@
+{
+	"tests" : [
+		{
+			"name" : "Check rows amount in hr.countries",
+			"pre_processor": [],
+			"query" : "Select count(*) from hr.countries",
+			"expected" : 25
+
+		},
+
+		{
+			"name" : "Check rows amount in hr.regions",
+			"query" : "Select count(*) from hr.regions",
+			"pre_processor" : ["insert into hr.regions(region_name) values('Arctica')", "insert into hr.regions(region_name) values('Africa')", "insert into hr.regions(region_name) values('South America')"],
+			"expected" : 4
+
+		},
+
+				{
+			"name" : "Table COUNTRIES: col COUNTRY_NAME: no duplicates",
+			"query" : "select count(*) from (select lower(country_name) cn, count(*) cnt from hr.countries group by lower(country_name) having count(*) > 1 ) t;",
+			"expected" : 0
+
+		},
+
+				{
+			"name" : "Table COUNTRIES: col COUNTRY_NAME: no nulls",
+			"query" : "select count(*) from hr.countries where country_name is null;",
+			"expected" : 0
+
+		},
+
+				{
+			"name" : "Table COUNTRIES: col COUNTRY_NAME: first letter uppercase",
+			"query" : "select count(*) from hr.countries where substring(country_name, 1,1) collate sql_latin1_general_cp1_cs_as <> upper(substring(country_name, 1,1)) collate sql_latin1_general_cp1_cs_as;",
+			"expected" : 0
+
+		},
+
+				{
+			"name" : "Table COUNTRIES: col REGION_ID: value references to table REGION",
+			"query" : "select count(1) from hr.countries c where not exists (select 1 from hr.regions r where c.region_id = r.region_id) or c.region_id is null;  ",
+			"expected" : 0
+
+		},
+
+				{
+			"name" : "Table REGIONS: col REGION_NAME: no duplicates",
+			"query" : "select count(*) from (select lower(region_name) rn, count(*) cnt from hr.regions group by lower(region_name) having count(*) > 1 ) t;",
+			"expected" : 0
+
+		},
+
+						{
+			"name" : "Table REGIONS: col REGION_NAME: no nulls",
+			"query" : "Select count(*) from hr.regions where region_name is null;",
+			"expected" : 0
+
+		},
+
+								{
+			"name" : "Table DEPARTMENTS: col DEPARTMENT_NAME: no nulls",
+			"query" : "select count(*) from hr.departments where department_name is null;",
+			"expected" : 0
+
+		},
+
+								{
+			"name" : "Table DEPARTMENTS: col LOCATION_ID: references to table LOCATION",
+			"query" : "select count(*) from hr.departments d where not exists (select 1 from hr.locations l where l.location_id = d.location_id) or d.location_id is null;",
+			"expected" : 0
+
+		},
+
+								{
+			"name" : "Table DEPARTMENTS: col DEPARTMENT_NAME: no duplicates",
+			"query" : "select count(*) from (select department_name, count(*) cnt from hr.departments group by department_name having count(*) > 1 ) t;",
+			"expected" : 0
+
+		},
+
+		{
+
+			"name" : "Table JOBS: col JOB_TITLE: no duplicates",
+			"query" : "select count(*) from (select job_title, count(*) cnt from hr.jobs group by job_title having count(*) > 1 ) t;",
+			"expected" : 0
+
+		},
+
+		{
+
+			"name" : "Table JOBS: col JOB_TITLE: no nulls",
+			"query" : "Select count(*) from hr.jobs where job_title is null;",
+			"expected" : 0
+
+		},
+
+				{
+
+			"name" : "Table JOBS: col MIN_SALARY: no nulls",
+			"query" : "select count(*) from hr.jobs where min_salary is null;",
+			"expected" : 0
+
+		},
+
+				{
+
+			"name" : "Table JOBS: col MAX_SALARY: no nulls",
+			"query" : "select count(*) from hr.jobs where max_salary is null;",
+			"expected" : 0
+
+		},
+
+				{
+
+			"name" : "Table JOBS: col MAX_SALARY >= col MIN_SALARY",
+			"query" : "SELECT COUNT(*) from hr.jobs where max_salary < min_salary;",
+			"expected" : 0
+
+		},
+
+				{
+
+			"name" : "Table EMPLOYEES: col EMAIL format",
+			"query" : "select count(*) from hr.employees where email not like '^[^@\\s]+@[^@\\s\\.]+\\.[^@\\.\\s]+$';",
+			"expected" : 40
+
+		},
+
+				{
+
+			"name" : "Employee salary by employee_id 100",
+			"query" : "select salary from hr.employees where employee_id = 100 ;",
+			"expected" : 24000.00
+
+		},
+
+						{
+
+			"name" : "Table EMPLOYEE: col SALARY: accordance to table JOBS ",
+			"query" : "select count(1) from hr.employees e join hr.jobs j on e.job_id = j.job_id where e.salary > j.max_salary or e.salary < j.min_salary;",
+			"expected" : 0
+
+		}
+
+
+	]
+
+
+
+}
