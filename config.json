@@ -3,9 +3,9 @@
 		"database" : "DRIVER={ODBC Driver 17 for SQL Server};SERVER=EPBYMINW2909;DATABASE=TRN;UID=ihar_makayed;PWD=FC5ihmccd14;Trusted_Connection=yes;",
 		"test_data_folder" : "test_data",
 		"mail_settings" : { 
-			"sender_email" : "ryhorpiperovich@gmail.com", 
+			"sender_email" : "****@gmail.com", 
 			"sender_name" : "python_mail_test Ihar Makayed",
-			"password" :  "FC5ihmccd14",
+			"password" :  "****",
 			"receiver_emails" : ["iharmaccoed@gmail.com", "ihar_makayed@epam.com"],
 			"receiver_names" : ["ihar", "ihar_m"],
 			"port" : 587
