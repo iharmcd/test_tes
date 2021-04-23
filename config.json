@@ -1,6 +1,6 @@
 {
 	"dev" : {
-		"database" : "DRIVER={ODBC Driver 17 for SQL Server};SERVER=EPBYMINW2909;DATABASE=TRN;UID=ihar_makayed;PWD=FC5ihmccd14;Trusted_Connection=yes;",
+		"database" : "DRIVER={ODBC Driver 17 for SQL Server};SERVER=EPBYMINW2909;DATABASE=TRN;UID=ihar_makayed;PWD=FC5ihmccd14;Trusted_Connection=no;",
 		"test_data_folder" : "test_data",
 		"mail_settings" : { 
 			"sender_email" : "****@gmail.com", 
