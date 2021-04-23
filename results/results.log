@@ -1,0 +1,197 @@
+
+
+Testing was started test_data\smoke_test.json
+
+
+Test case Check rows amount in hr.countries
+
+PASS. Result is '25' as expected
+	Query: 'Select count(*) from hr.countries'
+
+Test case Check rows amount in hr.regions
+
+FAIL. Result is '121', but expected '1'
+	Query: 'Select count(*) from hr.regions'
+
+Test case Table COUNTRIES: col COUNTRY_NAME: no duplicates
+
+PASS. Result is '0' as expected
+	Query: 'select count(*) from (select lower(country_name) cn, count(*) cnt from hr.countries group by lower(country_name) having count(*) > 1 ) t;'
+
+Test case Table COUNTRIES: col COUNTRY_NAME: no nulls
+
+PASS. Result is '0' as expected
+	Query: 'select count(*) from hr.countries where country_name is null;'
+
+Test case Table COUNTRIES: col COUNTRY_NAME: first letter uppercase
+
+PASS. Result is '0' as expected
+	Query: 'select count(*) from hr.countries where substring(country_name, 1,1) collate sql_latin1_general_cp1_cs_as <> upper(substring(country_name, 1,1)) collate sql_latin1_general_cp1_cs_as;'
+
+Test case Table COUNTRIES: col REGION_ID: value references to table REGION
+
+PASS. Result is '0' as expected
+	Query: 'select count(1) from hr.countries c where not exists (select 1 from hr.regions r where c.region_id = r.region_id) or c.region_id is null;  '
+
+Test case Table REGIONS: col REGION_NAME: no duplicates
+
+FAIL. Result is '3', but expected '0'
+	Query: 'select count(*) from (select lower(region_name) rn, count(*) cnt from hr.regions group by lower(region_name) having count(*) > 1 ) t;'
+
+Test case Table REGIONS: col REGION_NAME: no nulls
+
+PASS. Result is '0' as expected
+	Query: 'Select count(*) from hr.regions where region_name is null;'
+
+Test case Table DEPARTMENTS: col DEPARTMENT_NAME: no nulls
+
+PASS. Result is '0' as expected
+	Query: 'select count(*) from hr.departments where department_name is null;'
+
+Test case Table DEPARTMENTS: col LOCATION_ID: references to table LOCATION
+
+PASS. Result is '0' as expected
+	Query: 'select count(*) from hr.departments d where not exists (select 1 from hr.locations l where l.location_id = d.location_id) or d.location_id is null;'
+
+Test case Table DEPARTMENTS: col DEPARTMENT_NAME: no duplicates
+
+PASS. Result is '0' as expected
+	Query: 'select count(*) from (select department_name, count(*) cnt from hr.departments group by department_name having count(*) > 1 ) t;'
+
+Test case Table JOBS: col JOB_TITLE: no duplicates
+
+PASS. Result is '0' as expected
+	Query: 'select count(*) from (select job_title, count(*) cnt from hr.jobs group by job_title having count(*) > 1 ) t;'
+
+Test case Table JOBS: col JOB_TITLE: no nulls
+
+PASS. Result is '0' as expected
+	Query: 'Select count(*) from hr.jobs where job_title is null;'
+
+Test case Table JOBS: col MIN_SALARY: no nulls
+
+PASS. Result is '0' as expected
+	Query: 'select count(*) from hr.jobs where min_salary is null;'
+
+Test case Table JOBS: col MAX_SALARY: no nulls
+
+PASS. Result is '0' as expected
+	Query: 'select count(*) from hr.jobs where max_salary is null;'
+
+Test case Table JOBS: col MAX_SALARY >= col MIN_SALARY
+
+PASS. Result is '0' as expected
+	Query: 'SELECT COUNT(*) from hr.jobs where max_salary < min_salary;'
+
+Test case Table EMPLOYEES: col EMAIL format
+
+FAIL. Result is '40', but expected '0'
+	Query: 'select count(*) from hr.employees where email not like '^[^@\s]+@[^@\s\.]+\.[^@\.\s]+$';'
+
+Test case Employee salary by employee_id 100
+
+FAIL. Result is '24000.00', but expected '25'
+	Query: 'select salary from hr.employees where employee_id = 100 ;'
+
+Test case Table EMPLOYEE: col SALARY: accordance to table JOBS 
+
+PASS. Result is '0' as expected
+	Query: 'select count(1) from hr.employees e join hr.jobs j on e.job_id = j.job_id where e.salary > j.max_salary or e.salary < j.min_salary;'
+
+Testing was started test_data\smoke_test_1.json
+
+
+Test case Check rows amount in hr.countries
+
+PASS. Result is '25' as expected
+	Query: 'Select count(*) from hr.countries'
+
+Test case Check rows amount in hr.regions
+
+FAIL. Result is '124', but expected '4'
+	Query: 'Select count(*) from hr.regions'
+
+Test case Table COUNTRIES: col COUNTRY_NAME: no duplicates
+
+PASS. Result is '0' as expected
+	Query: 'select count(*) from (select lower(country_name) cn, count(*) cnt from hr.countries group by lower(country_name) having count(*) > 1 ) t;'
+
+Test case Table COUNTRIES: col COUNTRY_NAME: no nulls
+
+PASS. Result is '0' as expected
+	Query: 'select count(*) from hr.countries where country_name is null;'
+
+Test case Table COUNTRIES: col COUNTRY_NAME: first letter uppercase
+
+PASS. Result is '0' as expected
+	Query: 'select count(*) from hr.countries where substring(country_name, 1,1) collate sql_latin1_general_cp1_cs_as <> upper(substring(country_name, 1,1)) collate sql_latin1_general_cp1_cs_as;'
+
+Test case Table COUNTRIES: col REGION_ID: value references to table REGION
+
+PASS. Result is '0' as expected
+	Query: 'select count(1) from hr.countries c where not exists (select 1 from hr.regions r where c.region_id = r.region_id) or c.region_id is null;  '
+
+Test case Table REGIONS: col REGION_NAME: no duplicates
+
+FAIL. Result is '3', but expected '0'
+	Query: 'select count(*) from (select lower(region_name) rn, count(*) cnt from hr.regions group by lower(region_name) having count(*) > 1 ) t;'
+
+Test case Table REGIONS: col REGION_NAME: no nulls
+
+PASS. Result is '0' as expected
+	Query: 'Select count(*) from hr.regions where region_name is null;'
+
+Test case Table DEPARTMENTS: col DEPARTMENT_NAME: no nulls
+
+PASS. Result is '0' as expected
+	Query: 'select count(*) from hr.departments where department_name is null;'
+
+Test case Table DEPARTMENTS: col LOCATION_ID: references to table LOCATION
+
+PASS. Result is '0' as expected
+	Query: 'select count(*) from hr.departments d where not exists (select 1 from hr.locations l where l.location_id = d.location_id) or d.location_id is null;'
+
+Test case Table DEPARTMENTS: col DEPARTMENT_NAME: no duplicates
+
+PASS. Result is '0' as expected
+	Query: 'select count(*) from (select department_name, count(*) cnt from hr.departments group by department_name having count(*) > 1 ) t;'
+
+Test case Table JOBS: col JOB_TITLE: no duplicates
+
+PASS. Result is '0' as expected
+	Query: 'select count(*) from (select job_title, count(*) cnt from hr.jobs group by job_title having count(*) > 1 ) t;'
+
+Test case Table JOBS: col JOB_TITLE: no nulls
+
+PASS. Result is '0' as expected
+	Query: 'Select count(*) from hr.jobs where job_title is null;'
+
+Test case Table JOBS: col MIN_SALARY: no nulls
+
+PASS. Result is '0' as expected
+	Query: 'select count(*) from hr.jobs where min_salary is null;'
+
+Test case Table JOBS: col MAX_SALARY: no nulls
+
+PASS. Result is '0' as expected
+	Query: 'select count(*) from hr.jobs where max_salary is null;'
+
+Test case Table JOBS: col MAX_SALARY >= col MIN_SALARY
+
+PASS. Result is '0' as expected
+	Query: 'SELECT COUNT(*) from hr.jobs where max_salary < min_salary;'
+
+Test case Table EMPLOYEES: col EMAIL format
+
+PASS. Result is '40' as expected
+	Query: 'select count(*) from hr.employees where email not like '^[^@\s]+@[^@\s\.]+\.[^@\.\s]+$';'
+
+Test case Employee salary by employee_id 100
+
+PASS. Result is '24000.00' as expected
+	Query: 'select salary from hr.employees where employee_id = 100 ;'
+
+Test case Table EMPLOYEE: col SALARY: accordance to table JOBS 
+
+PASS. Result is '0' as expected
+	Query: 'select count(1) from hr.employees e join hr.jobs j on e.job_id = j.job_id where e.salary > j.max_salary or e.salary < j.min_salary;'
